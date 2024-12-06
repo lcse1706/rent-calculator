@@ -67,7 +67,7 @@ function App() {
 
     const address = addressRef.current?.value || 'No_address';
 
-    const fileName = `Rent_Report_${address}_${formattedDate}.pdf`;
+    const fileName = `${address}_${formattedDate}_Rent_Calculation.pdf`;
 
     doc.setFontSize(12);
     doc.setFont('normal');
@@ -78,7 +78,7 @@ function App() {
 
     doc.setFontSize(16);
     doc.setFont('bold');
-    doc.text('Rent Report', 105, 30, { align: 'center' });
+    doc.text('Rent Calculation', 105, 30, { align: 'center' });
 
     const tableData = [
       ['Rent', rentRef.current?.value || '0'],
@@ -98,11 +98,16 @@ function App() {
       startY: 50,
       didDrawCell: data => {
         if (data.row.index === tableData.length - 1) {
-          doc.setFontSize(18);
+          doc.setFontSize(14);
           doc.setFont('extra bold');
-          doc.text(`${total} zl`, 170, data.cell.y + data.cell.height + 10, {
-            align: 'right',
-          });
+          doc.text(
+            `Total: ${total} zl`,
+            170,
+            data.cell.y + data.cell.height + 10,
+            {
+              align: 'right',
+            }
+          );
         }
       },
     });
