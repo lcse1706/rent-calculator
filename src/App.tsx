@@ -18,7 +18,10 @@ function App() {
   const refTv = useRef<HTMLInputElement>(null);
 
   const parseToTwoDecimals = (value: string | null | undefined): number => {
-    return parseFloat((value || '0').replace(/^(\d*\.?\d{0,2}).*$/, '$1')) || 0;
+    const normalizedValue = (value || '0').replace(',', '.');
+    return (
+      parseFloat(normalizedValue.replace(/^(\d*\.?\d{0,2}).*$/, '$1')) || 0
+    );
   };
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -56,11 +59,9 @@ function App() {
       electricityAdvance,
       electricityInvoice,
       tv,
-    ].reduce((acc, value) => acc + Number(value), 0);
+    ].reduce((acc, value) => acc + value, 0);
 
     setTotal(totalValue);
-
-    // e.currentTarget.reset();
   };
 
   const generatePDF = () => {
