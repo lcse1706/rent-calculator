@@ -17,17 +17,23 @@ function App() {
   const refElectricityInvoice = useRef<HTMLInputElement>(null);
   const refTv = useRef<HTMLInputElement>(null);
 
+  const parseToTwoDecimals = (value: string | null | undefined): number => {
+    return parseFloat((value || '0').replace(/^(\d*\.?\d{0,2}).*$/, '$1')) || 0;
+  };
+
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const rentValue = Number(rentRef.current?.value) || 0;
-    const adminFee = Number(refAdminFee.current?.value) || 0;
-    const mediaSettle = Number(refMediaSettle.current?.value) || 0;
-    const electricityAdvance =
-      Number(refElectricityAdvance.current?.value) || 0;
-    const electricityInvoice =
-      Number(refElectricityInvoice.current?.value) || 0;
-    const tv = Number(refTv.current?.value) || 0;
+    const rentValue = parseToTwoDecimals(rentRef.current?.value);
+    const adminFee = parseToTwoDecimals(refAdminFee.current?.value);
+    const mediaSettle = parseToTwoDecimals(refMediaSettle.current?.value);
+    const electricityAdvance = parseToTwoDecimals(
+      refElectricityAdvance.current?.value
+    );
+    const electricityInvoice = parseToTwoDecimals(
+      refElectricityInvoice.current?.value
+    );
+    const tv = parseToTwoDecimals(refTv.current?.value);
 
     if (
       [
@@ -83,13 +89,13 @@ function App() {
     const tableData = [
       ['Rent', rentRef.current?.value || '0'],
       ['Administration Fee', refAdminFee.current?.value || '0'],
-      ['Periodic Media Settlement', refMediaSettle.current?.value || '0'],
       [
         'Advance Payment for Electricity',
         refElectricityAdvance.current?.value || '0',
       ],
       ['Electricity Invoice', refElectricityInvoice.current?.value || '0'],
       ['TV/Internet', refTv.current?.value || '0'],
+      ['Periodic Media Settlement', refMediaSettle.current?.value || '0'],
     ];
 
     autoTable(doc, {
@@ -136,28 +142,24 @@ function App() {
 
       <form onSubmit={submitHandler} className="form">
         <input type="text" placeholder="Address" ref={addressRef} />
-        <input type="number" placeholder="Rent" ref={rentRef} />
+        <input type="text" placeholder="Rent" ref={rentRef} />
+        <input type="text" placeholder="Administration fee" ref={refAdminFee} />
         <input
-          type="number"
-          placeholder="Administration fee"
-          ref={refAdminFee}
-        />
-        <input
-          type="number"
+          type="text"
           placeholder="Periodic Media Settlement"
           ref={refMediaSettle}
         />
         <input
-          type="number"
+          type="text"
           placeholder="Advance payment for electricity"
           ref={refElectricityAdvance}
         />
         <input
-          type="number"
+          type="text"
           placeholder="Electricity Invoice"
           ref={refElectricityInvoice}
         />
-        <input type="number" placeholder="TV/Internet" ref={refTv} />
+        <input type="text" placeholder="TV/Internet" ref={refTv} />
 
         <button type="submit">Calculate</button>
       </form>
